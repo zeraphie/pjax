@@ -1,7 +1,7 @@
 # PJAX
 This is my own condensed pjax (pushstate + ajax) wrapper for super fast load times and does not rely on jQuery
 
-If you want to see a demo, have a look at my (github pages)[https://lopeax.github.io/] site!
+If you want to see a demo, have a look at my [github pages](https://lopeax.github.io/) site!
 
 ## Usage
 Simply include the javascript and then you're set to use PJAX! *Remember to put it above pretty much everything!*
