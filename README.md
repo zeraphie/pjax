@@ -25,6 +25,8 @@ pjax.container = '#pjax-container';
 pjax.setup();
 ```
 
+In order for the pjax to fire, currently you will need to add the class `pjax-link` to any links that you want to make use pjax, this is because there are many cases that you won't want pjax to run, and as such, this uses a whitelist and not a blacklist style system for what to pjax
+
 
 ## Todo
 
