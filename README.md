@@ -24,3 +24,9 @@ If you want to change the container which pjax replaces, you can do it as below,
 pjax.container = '#pjax-container';
 pjax.setup();
 ```
+
+
+## Todo
+
+- [ ] Add detailed comments!
+- [ ] Rewrite it as an ES6 Class
