@@ -32,5 +32,5 @@ In order for the pjax to fire, currently you will need to add the class `pjax-li
 
 ## Todo
 
-- [ ] Add detailed comments!
-- [ ] Rewrite it as an ES6 Class
+- [x] Add detailed comments!
+- [x] Rewrite it as an ES6 Class
