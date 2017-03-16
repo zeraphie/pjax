@@ -6,8 +6,6 @@ If you want to see a demo, have a look at my [github pages](https://lopeax.githu
 ---
 
 ## Usage
-In order to actually use it, wrap the code you want to run when a page has finished loaded in the `pjax.onload` wrapper function as follows
-
 At the start of your js file, setup the pjax class via using the es6 import function
 
 ```javascript
