@@ -1,3 +1,12 @@
+if(typeof NodeList.prototype.forEach === 'undefined'){
+    /* Polyfill for nodelist foreach for ie11 */		
+    NodeList.prototype.forEach = function (callback, scope){
+        for(var i = 0; i < this.length; i++){
+            callback.call(scope, this[i], i);
+        }
+    };
+}
+
 /**
  * This is an ES6 Class that handles PJAX logic for an application
  *
