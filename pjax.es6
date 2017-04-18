@@ -45,7 +45,6 @@ export default class PJAX {
     static get DEFAULT_LINKS(){
         return '.pjax-link';
     }
-    
 
     /**
      * The default elements to replace the content/attribute
