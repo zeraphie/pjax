@@ -174,7 +174,14 @@ export default class PJAX {
 
         return this;
     }
-    
+
+    /**
+     * Add the pjax link event to all the links passed into this function
+     *
+     * @param NodeList pjaxLinks A node list of all the links to pjax
+     *
+     * @return PJAX
+     */
     addLinkEvent(pjaxLinks){
         var self = this;
 
@@ -212,24 +219,36 @@ export default class PJAX {
             var response = this.response;
 
             for(var i = 0, len = self.replace.textContent.length; i < len; i++){
-                var els = document.querySelectorAll(self.replace.textContent[i]);
+                var els = document.querySelectorAll(
+                    self.replace.textContent[i]
+                );
                 els.forEach(function(el, key){
-                    el.textContent = response.querySelectorAll(self.replace.textContent[i])[key].textContent;
+                    el.textContent = response.querySelectorAll(
+                        self.replace.textContent[i]
+                    )[key].textContent;
                 });
             }
 
             for(var i = 0, len = self.replace.attribute.length; i < len; i++){
-                var els = document.querySelectorAll(self.replace.attribute[i].selector);
+                var els = document.querySelectorAll(
+                    self.replace.attribute[i].selector
+                );
                 els.forEach(function(el, key){
                     el.setAttribute(
                         pjax.replace.attribute[i].attribute,
-                        response.querySelectorAll(self.replace.attribute[i].selector)[key].getAttribute(self.replace.attribute[i].attribute)
+                        response.querySelectorAll(
+                            self.replace.attribute[i].selector
+                        )[key].getAttribute(self.replace.attribute[i].attribute)
                     );
                 });
             }
 
-            var scripts = response.querySelectorAll(self.container + ' script');
-            self.addLinkEvent(response.querySelectorAll(self.container + ' ' + self.links));
+            var scripts = response.querySelectorAll(
+                self.container + ' script'
+            );
+            self.addLinkEvent(response.querySelectorAll(
+                self.container + ' ' + self.links
+            ));
 
             var newPage = response.querySelector(self.container);
 
