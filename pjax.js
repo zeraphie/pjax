@@ -68,8 +68,7 @@ export default class PJAX {
     static get DEFAULT_REPLACE(){
         return {
             textContent: [
-                'title',
-                'h1'
+                'title'
             ],
             attribute: [
                 {
