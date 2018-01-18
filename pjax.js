@@ -230,6 +230,11 @@ export default class PJAX {
      * @returns {PJAX}
      */
     execQueue(){
+        /* Guard against improper queues */
+        if(!(this.queue instanceof Array) || !this.queue.length){
+            return this;
+        }
+        
         this.queue.forEach(func => {
             if(typeof func === 'function'){
                 try {
