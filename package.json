@@ -1,5 +1,5 @@
 {
-  "name": "pjax",
+  "name": "pjaxjs",
   "version": "1.0.0",
   "description": "A pushstate library to help with website load times",
   "main": "src/pjax.js",
