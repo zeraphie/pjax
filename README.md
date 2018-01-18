@@ -5,6 +5,19 @@ If you want to see a demo, have a look at my [github pages](https://zeraphie.git
 
 ---
 
+## Installation
+This is available as a package on npm so you can add this to your project b using npm or yarn
+
+**npm**
+```bash
+npm install z-pjax --save-dev
+```
+
+**yarn**
+```bash
+yarn add z-pjax --dev
+```
+
 ## Usage
 In your main JavaScript file, import the class, setup the pjax object and then attach any functions that need to go onload with `pjax.onload`, which is a wrapper for `window.onload` and when the pjax request has finished
 
@@ -104,4 +117,21 @@ if(typeof NodeList.prototype.forEach === 'undefined'){
         }
     };
 }
+```
+
+---
+
+## Building
+If for some reason, you want to build the files for this library yourself (instead of using `dist/pjax.js`), you can run the following commands to work locally with it
+
+**Install dependencies for `gulp`**
+```bash
+npm install babel-cli babel-preset-env babel-core babelify browserify del gulp gulp-plumber gulp-sourcemaps gulp-uglify gulp-util run-sequence vinyl-buffer vinyl-source-stream
+```
+
+**Running `gulp`
+```bash
+gulp # This command builds the files, then watches for any changes in the src directory
+gulp build # This command only builds the files
+gulp watch # This command only watches the files
 ```
