@@ -109,7 +109,7 @@ export default class PJAX {
                 this.request(window.location.href);
             };
             
-            // Make sure the onload functions are fired at least once!
+            /* Make sure the onload functions are fired at least once! */
             this.execQueue();
         }
         
