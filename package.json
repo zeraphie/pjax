@@ -1,0 +1,42 @@
+{
+  "name": "pjax",
+  "version": "1.0.0",
+  "description": "A pushstate library to help with website load times",
+  "main": "src/pjax.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zeraphie/pjax.git"
+  },
+  "keywords": [
+    "pjax",
+    "pushstate",
+    "history",
+    "ajax",
+    "pagespeed"
+  ],
+  "author": "Izzy Skye",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zeraphie/pjax/issues"
+  },
+  "homepage": "https://github.com/zeraphie/pjax#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babelify": "^8.0.0",
+    "browserify": "^15.2.0",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-plumber": "^1.2.0",
+    "gulp-sourcemaps": "^2.6.3",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "run-sequence": "^2.2.1",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
+  }
+}

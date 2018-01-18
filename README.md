@@ -9,7 +9,7 @@ If you want to see a demo, have a look at my [github pages](https://zeraphie.git
 In your main JavaScript file, import the class, setup the pjax object and then attach any functions that need to go onload with `pjax.onload`, which is a wrapper for `window.onload` and when the pjax request has finished
 
 ```javascript
-import PJAX from './PJAX';
+import PJAX from './src/PJAX';
 
 let pjax = new PJAX();
 
@@ -52,7 +52,7 @@ Sometimes elements outside of the `container` will need to change as well, such 
 ```javascript
 let pjax = new PJAX();
 
-pjax.replace.textContent: [
+pjax.replace.textContent = [
     'title'
 ];
 
@@ -65,7 +65,7 @@ Sometimes attributes of elements will also need to be changed, particularly ones
 ```javascript
 let pjax = new PJAX();
 
-pjax.replace.attribute: [
+pjax.replace.attribute = [
     {
         selector: 'meta[name$="title"]',
         attribute: 'content'
