@@ -1,44 +1,93 @@
 # PJAX
 This is my own condensed pjax (pushstate + ajax) wrapper for super fast load times, has **no dependencies** and no additional server requirements
 
-If you want to see a demo, have a look at my [github pages](https://lopeax.github.io/) site! Although at the moment this doesn't use the es6 version
+If you want to see a demo, have a look at my [github pages](https://zeraphie.github.io/) site!
 
 ---
 
 ## Usage
-At the start of your js file, setup the pjax class via using the es6 import function
+In your main JavaScript file, import the class, setup the pjax object and then attach any functions that need to go onload with `pjax.onload`, which is a wrapper for `window.onload` and when the pjax request has finished
 
 ```javascript
-import PJAX from "pjax";
+import PJAX from './PJAX';
+
 let pjax = new PJAX();
-```
 
-Then add any javascript that requires to the page to be fully loaded with `pjax.onload`
+let x = 0;
 
-```javascript
-pjax.onload(function(){
-    // Do something for when a page has loaded, either initially or via pjax!
+pjax.onload(() => {
+    x++;
+    
+    console.log(`Loaded ${x} times with pjax`);
 });
-```
 
-And add this as the last bit of javascript to set everything up
-
-```javascript
 pjax.setup();
 ```
 
-If you want to change the container which pjax replaces, or which links it attaches pjax to, you can do it as below, anytime before the setup, this pjax library uses `document.querySelector` in order to get the very first match for the container, so you can use any class/id/attribute combo you wish
+## Selecting data to PJAX
+This library is able to replace various different elements on a webpage, it currently replaces the main content (body), the title tag, and then any matching attributes that you want.
+
+### Changing the `container` and `links`
+The main functionality of PJAX is used in the `container` and `links` properties, and there are two ways of changing what these are (the defaults are `.body` and `.pjax-link`
+
+**Constructor**
+```javascript
+let pjax = new PJAX('main', 'a');
+pjax.setup();
+```
+
+**After Initialisation**
+```javascript
+let pjax = new PJAX();
+
+pjax.container = 'main';
+pjax.links = 'a';
+
+pjax.setup();
+```
+
+### Changing text content outside of the `container`
+Sometimes elements outside of the `container` will need to change as well, such as the title of the page, or the h1 if it exists outside, in order to change what elements have their `textContent` property changed, the following is needed (these are also the defaults)
 
 ```javascript
-// First style, adding them directly to the constructor
-let pjax = new PJAX('#pjax-container', 'a[data-pjax]');
+let pjax = new PJAX();
 
-// If for some reason you don't want to change them in the constructor
-// you can change them as follows
-pjax.container = '#pjax-container';
-pjax.links = 'a[data-pjax]';
+pjax.replace.textContent: [
+    'title'
+];
 
-// Then do the setup!
+pjax.setup();
+```
+
+### Changing attributes outside of the `container`
+Sometimes attributes of elements will also need to be changed, particularly ones related to SEO or Social media, this library also covers those, but if you need to change the behaviour, you'll need to do the following (these are also the defaults)
+
+```javascript
+let pjax = new PJAX();
+
+pjax.replace.attribute: [
+    {
+        selector: 'meta[name$="title"]',
+        attribute: 'content'
+    },
+    {
+        selector: 'meta[name$="description"]',
+        attribute: 'content'
+    },
+    {
+        selector: 'meta[property^="og:"]',
+        attribute: 'content'
+    },
+    {
+        selector: 'meta[property^="article:"]',
+        attribute: 'content'
+    },
+    {
+        selector: 'link[rel="canonical"]',
+        attribute: 'href'
+    }
+];
+
 pjax.setup();
 ```
 
