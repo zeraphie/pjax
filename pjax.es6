@@ -7,7 +7,7 @@
  * https://zeraphie.github.io/
  *
  * @license MIT
- * @version 1.0.0
+ * @version 1.1.0
  * @author Izzy Skye
  */
 export default class PJAX {
@@ -83,92 +83,21 @@ export default class PJAX {
     }
 
     /**
-     * Getter for the container
-     *
-     * @return string The container for pjax to replace
-     */
-    get container(){
-        return this._container;
-    }
-
-    /**
-     * Setter for the container
-     *
-     * @param string container The container for pjax to replace
-     */
-    set container(container){
-        this._container = container;
-    }
-
-    /**
-     * Getter for the links
-     *
-     * @return string The selector for PJAX to execute pjax from
-     */
-    get links(){
-        return this._links;
-    }
-
-    /**
-     * Setter for the links
-     *
-     * @param string links The selector for PJAX to execute pjax from
-     */
-    set links(links){
-        this._links = links;
-    }
-
-    /**
-     * Getter for the elements/attributes to replace
-     *
-     * @return string The selector for PJAX to replace elements with
-     */
-    get replace(){
-        return this._replace;
-    }
-
-    /**
-     * Setter for the elements/attributes to replace
-     *
-     * @param string replace The selector for PJAX to replace elements with
-     */
-    set replace(replace){
-        this._replace = replace;
-    }
-
-    /**
-     * Getter for the function queue
-     *
-     * @return object The function queue
-     */
-    get queue(){
-        return this._queue;
-    }
-
-    /**
-     * Setter for the function queue
-     *
-     * @param object queue The function queue
-     */
-    set queue(queue){
-        this._queue = queue;
-    }
-
-    /**
      * Add all the event listeners needed for an application to use pjax, these
      * are typically just links and forms, although forms are to come
      *
      * @return PJAX
      */
     setup(){
-        var self = this;
-
         if (history && history.pushState) {
-            self.addLinkEvent(document.querySelectorAll(self.links));
+            this.addLinkEvent(document.querySelectorAll(this.links));
 
-            window.onpopstate = function() {
-                self.request(window.location.href);
+            window.onpopstate = () => {
+                this.request(window.location.href);
             };
+
+            // Make sure the onload functions are fired at least once!
+            this.execQueue();
         }
 
         return this;
@@ -182,15 +111,11 @@ export default class PJAX {
      * @return PJAX
      */
     addLinkEvent(pjaxLinks){
-        var self = this;
-
-        pjaxLinks.forEach(function(pjaxLink){
-            pjaxLink.addEventListener('click', function(e){
-                if(e.target.tagName.toLowerCase() === 'a'){
-                    e.preventDefault();
-                    self.request(e.target.href);
-                    history.pushState(null, null, e.target.href);
-                }
+        pjaxLinks.forEach(pjaxLink => {
+            pjaxLink.addEventListener('click', e => {
+                e.preventDefault();
+                this.request(e.target.href);
+                history.pushState(null, null, e.target.href);
             });
         });
 
@@ -206,63 +131,79 @@ export default class PJAX {
      * @return PJAX
      */
     request(url){
-        let self = this;
-
         /* Open an ajax get request to the url, requesting the document */
         let xhr = new XMLHttpRequest();
         xhr.open('GET', url);
         xhr.responseType = 'document';
 
         /* After loading the document, do the replacing */
-        xhr.addEventListener('load', function(e){
-            var response = this.response;
+        xhr.addEventListener('load', e => {
+            let response = e.currentTarget.response;
 
-            for(var i = 0, len = self.replace.textContent.length; i < len; i++){
-                var els = document.querySelectorAll(
-                    self.replace.textContent[i]
+            /* Replace all the text content fields */
+            for(let i = 0, len = this.replace.textContent.length; i < len; i++){
+                let elements = document.querySelectorAll(
+                    this.replace.textContent[i]
                 );
-                els.forEach(function(el, key){
-                    el.textContent = response.querySelectorAll(
-                        self.replace.textContent[i]
-                    )[key].textContent;
-                });
-            }
-
-            for(var i = 0, len = self.replace.attribute.length; i < len; i++){
-                var els = document.querySelectorAll(
-                    self.replace.attribute[i].selector
-                );
-                els.forEach(function(el, key){
-                    el.setAttribute(
-                        pjax.replace.attribute[i].attribute,
-                        response.querySelectorAll(
-                            self.replace.attribute[i].selector
-                        )[key].getAttribute(self.replace.attribute[i].attribute)
+                
+                elements.forEach((element, key) => {
+                    let found = response.querySelectorAll(
+                        this.replace.textContent[i]
                     );
+
+                    if(found.length && found[key]){
+                        element.textContent = found[key].textContent;
+                    }
                 });
             }
 
-            var scripts = response.querySelectorAll(
-                self.container + ' script'
-            );
-            self.addLinkEvent(response.querySelectorAll(
-                self.container + ' ' + self.links
+            /* Replace all the attributes */
+            for(let i = 0, len = this.replace.attribute.length; i < len; i++){
+                let elements = document.querySelectorAll(
+                    this.replace.attribute[i].selector
+                );
+                
+                elements.forEach((element, key) => {
+                    let found = response.querySelectorAll(
+                        this.replace.attribute[i].selector
+                    );
+
+                    if(found.length && found[key]){
+                        element.setAttribute(
+                            this.replace.attribute[i].attribute,
+                            found[key].getAttribute(
+                                this.replace.attribute[i].attribute
+                            )
+                        );
+                    }
+                });
+            }
+
+            /* Add the pjax link event to any new links in the content */
+            this.addLinkEvent(response.querySelectorAll(
+                this.container + ' ' + this.links
             ));
 
-            var newPage = response.querySelector(self.container);
+            /* Replace the actual content of the page */
+            let newPage = response.querySelector(this.container);
 
-            var currentPage = document.querySelector(self.container);
+            let currentPage = document.querySelector(this.container);
             currentPage.parentNode.replaceChild(newPage, currentPage);
 
-            scripts.forEach(function(code){
-                var script = document.createElement('script');
+            /* Replace all the script tags and execute them */
+            let scripts = response.querySelectorAll(
+                this.container + ' script'
+            );
+
+            scripts.forEach(code => {
+                let script = document.createElement('script');
                 script.text = code.textContent;
                 document.head.appendChild(script).parentNode.removeChild(script);
             });
 
             /* Execute the queue */
-            if(typeof self.afterLoad === 'function'){
-                self.afterLoad();
+            if(typeof this.afterLoad === 'function'){
+                this.afterLoad();
             }
         });
 
@@ -284,7 +225,7 @@ export default class PJAX {
                     try {
                         this.queue[funcName]();
                     } catch(e) {
-                        console.log(e);
+                        console.log('Failed to execute: ', e);
                     }
                 }
             }
