@@ -30,6 +30,8 @@ export default class PJAX {
         this.links = links;
         this.replace = replace;
         this.queue = [];
+        
+        this.linkEvent = this.linkEvent.bind(this);
     }
     
     /**
@@ -111,21 +113,61 @@ export default class PJAX {
     
     /**
      * Add the pjax link event to all the links passed into this function
+     *
+     * Excludes external links + file links
      * 
      * @param pjaxLinks A node list of all the links to pjax
      * @returns {PJAX}
      */
     addLinkEvent(pjaxLinks){
         pjaxLinks.forEach(pjaxLink => {
-            pjaxLink.addEventListener('click', e => {
-                e.preventDefault();
-                this.request(e.target.href);
-                history.pushState(null, null, e.target.href);
-            });
+            pjaxLink.addEventListener('click', this.linkEvent, true);
         });
         
         return this;
-    };
+    }
+    
+    /**
+     * The pjax link event
+     *
+     * @param e
+     * @returns {boolean}
+     */
+    linkEvent(e){
+        let url = e.currentTarget.href;
+        
+        if(this.constructor.validPjaxLink(url)){
+            e.stopPropagation();
+            e.preventDefault();
+        
+            this.request(url);
+            history.pushState(null, null, url);
+        
+            return false;
+        }
+    }
+    
+    /**
+     * Test if the url is pjax valid url
+     *
+     * @param url
+     * @returns {boolean}
+     */
+    static validPjaxLink(url){
+        /* Invalid if not from the same origin */
+        if(url.indexOf(window.location.origin) === -1){
+            return false;
+        }
+        
+        let fileRegex = new RegExp(/^.*\.([a-z0-9]+)$/i);
+        
+        /* Invalid if it is a file */
+        if(fileRegex.test(url)){
+            return false;
+        }
+        
+        return true;
+    }
     
     /**
      * Make the actual pjax request, replacing the title and description of the
@@ -183,19 +225,19 @@ export default class PJAX {
                 });
             }
             
-            /* Add the pjax link event to any new links in the content */
-            this.addLinkEvent(response.querySelectorAll(
-                `${this.container} ${this.links}`
-            ));
-            
             /* Replace the actual content of the page */
             let newPage = response.querySelector(this.container);
             
             let currentPage = document.querySelector(this.container);
             currentPage.parentNode.replaceChild(newPage, currentPage);
+    
+            /* Add the pjax link event to any new links in the content */
+            this.addLinkEvent(document.querySelectorAll(
+                `${this.container} ${this.links}`
+            ));
             
             /* Replace all the script tags and execute them */
-            let scripts = response.querySelectorAll(
+            let scripts = document.querySelectorAll(
                 `${this.container} script`
             );
             

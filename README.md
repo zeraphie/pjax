@@ -1,12 +1,12 @@
 # PJAX
-This is my own condensed pjax (pushstate + ajax) wrapper for super fast load times, has **no dependencies** and no additional server requirements
+This is my own condensed pjax (pushstate + ajax) library for super fast load times, has **no dependencies** and no additional server requirements
 
 If you want to see a demo, have a look at my [github pages](https://zeraphie.github.io/) site!
 
 ---
 
 ## Installation
-This is available as a package on npm so you can add this to your project b using npm or yarn
+This is available as a package on npm so you can add this to your project by using npm or yarn
 
 **npm**
 ```bash
