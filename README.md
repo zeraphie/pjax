@@ -10,12 +10,12 @@ This is available as a package on npm so you can add this to your project by usi
 
 **npm**
 ```bash
-npm install z-pjax --save-dev
+npm install z-pjax
 ```
 
 **yarn**
 ```bash
-yarn add z-pjax --dev
+yarn add z-pjax
 ```
 
 ## Usage
@@ -122,12 +122,9 @@ if(typeof NodeList.prototype.forEach === 'undefined'){
 ---
 
 ## Building
-If for some reason, you want to build the files for this library yourself (instead of using `dist/pjax.js`), you can run the following commands to work locally with it
+If for some reason, you want to build the files for this library yourself (instead of using the `dist` folder), you can run the following commands to work locally with it
 
-**Install dependencies for `gulp`**
-```bash
-npm install babel-cli babel-preset-env babel-core babelify browserify del gulp gulp-plumber gulp-sourcemaps gulp-uglify gulp-util run-sequence vinyl-buffer vinyl-source-stream
-```
+*Note: Don't forget to install the dev dependencies*
 
 **Running `gulp`
 ```bash

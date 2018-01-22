@@ -9,7 +9,7 @@ import './forEach';
  * https://zeraphie.github.io/
  *
  * @license MIT
- * @version 1.0.0
+ * @version 1.0.3
  * @author Izzy Skye
  */
 export default class PJAX {
